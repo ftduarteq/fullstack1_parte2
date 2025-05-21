@@ -57,6 +57,7 @@ public class ProductoController {
             productoExistente.setNombre(producto.getNombre());
             productoExistente.setDescripcion(producto.getDescripcion());
             productoExistente.setPrecio(producto.getPrecio());
+            
             productoExistente.setCategoria(producto.getCategoria());
             productoExistente.setOrigen(producto.getOrigen());
             productoExistente.setMarca(producto.getMarca());
