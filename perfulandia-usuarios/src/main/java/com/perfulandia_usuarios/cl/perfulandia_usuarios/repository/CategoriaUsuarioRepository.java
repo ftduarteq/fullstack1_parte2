@@ -7,5 +7,5 @@ import com.perfulandia_usuarios.cl.perfulandia_usuarios.model.CategoriaUsuario;
 
 @Repository
 public interface CategoriaUsuarioRepository extends JpaRepository<CategoriaUsuario, Integer> {
-
+    CategoriaUsuario findByCategoria(String categoria);
 }
