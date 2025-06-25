@@ -17,14 +17,19 @@ import org.springframework.web.bind.annotation.RestController;
 import com.perfulandia_catalogo.cl.perfulandia_catalogo.model.CategoriaProducto;
 import com.perfulandia_catalogo.cl.perfulandia_catalogo.service.CategoriaProductoService;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+
 @RestController
 @RequestMapping("api/v1/categorias")
+@Tag(name = "Categoría de Productos", description = "Operaciones relacionadas con las categorías de productos")
 public class CategoriaProductoController {
 
     @Autowired
     private CategoriaProductoService categoriaProductoService;
 
     @GetMapping
+    @Operation(summary = "Listar todas las categorías", description = "Obtiene una lista de todas las categorías de productos disponibles")
     public ResponseEntity<List<CategoriaProducto>> listar() {
         List<CategoriaProducto> categorias = categoriaProductoService.findAll();
         if(categorias.isEmpty()) {
@@ -34,6 +39,7 @@ public class CategoriaProductoController {
     }
 
     @GetMapping("{id}")
+    @Operation(summary = "Buscar categoría por ID", description = "Busca una categoría de producto según su identificador")
     public ResponseEntity<CategoriaProducto> buscar(@PathVariable Integer id) {
         try{
             CategoriaProducto categoria = categoriaProductoService.findById(id);
@@ -45,12 +51,14 @@ public class CategoriaProductoController {
     }
 
     @PostMapping
+    @Operation(summary = "Guardar nueva categoría", description = "Guarda una nueva categoría de producto en el sistema")
     public ResponseEntity<CategoriaProducto> guardar(@RequestBody CategoriaProducto categoria) {
         CategoriaProducto categoriaNueva = categoriaProductoService.save(categoria);
         return ResponseEntity.status(HttpStatus.CREATED).body(categoriaNueva);
     }
 
     @PutMapping("{id}")
+    @Operation(summary = "Actualizar categoría existente", description = "Actualiza los datos de una categoría de producto existente")
     public ResponseEntity<CategoriaProducto> actualizar(@PathVariable Integer id, @RequestBody CategoriaProducto categoria) {
         try {
             CategoriaProducto catProd = categoriaProductoService.findById(id);
@@ -65,6 +73,7 @@ public class CategoriaProductoController {
     }
 
     @DeleteMapping("{id}")
+    @Operation(summary = "Eliminar categoría", description = "Elimina una categoría de producto del sistema por su identificador")
     public ResponseEntity<Void> delete(@PathVariable Integer id) {
         try {
             categoriaProductoService.deleteById(id);

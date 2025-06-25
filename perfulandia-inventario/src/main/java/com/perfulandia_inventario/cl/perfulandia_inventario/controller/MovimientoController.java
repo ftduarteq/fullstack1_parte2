@@ -16,14 +16,19 @@ import org.springframework.web.bind.annotation.RestController;
 import com.perfulandia_inventario.cl.perfulandia_inventario.model.Movimiento;
 import com.perfulandia_inventario.cl.perfulandia_inventario.service.MovimientoService;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+
 @RestController
 @RequestMapping("api/v1/movimientos")
+@Tag(name = "Movimientos", description = "Operaciones relacionadas con movimientos de inventario")
 public class MovimientoController {
 
     @Autowired
     private MovimientoService movimientoService;
 
     @GetMapping
+    @Operation(summary = "Listar todos los movimientos", description = "Obtiene una lista de todos los movimientos de inventario")
     public ResponseEntity<List<Movimiento>> listar() {
         List<Movimiento> listaMovimientos = movimientoService.findAll();
         if (listaMovimientos.isEmpty()) {
@@ -33,6 +38,7 @@ public class MovimientoController {
     }
 
     @GetMapping("{id}")
+    @Operation(summary = "Buscar movimiento por ID", description = "Busca un movimiento de inventario según su identificador")
     public ResponseEntity<Movimiento> buscar(@PathVariable Integer id) {
         try {
             Movimiento movimiento = movimientoService.findById(id);
@@ -43,6 +49,7 @@ public class MovimientoController {
     }
 
     @PostMapping
+    @Operation(summary = "Guardar nuevo movimiento", description = "Registra un nuevo movimiento de inventario")
     public ResponseEntity<?> guardar(@RequestBody Movimiento movimiento) {
         try {
             Movimiento nuevoMovimiento = movimientoService.save(movimiento);
@@ -53,6 +60,7 @@ public class MovimientoController {
     }
 
     @DeleteMapping("{id}")
+    @Operation(summary = "Eliminar movimiento", description = "Elimina un movimiento de inventario por su identificador")
     public ResponseEntity<?> eliminar(@PathVariable Integer id) {
         try {
             movimientoService.deleteById(id);

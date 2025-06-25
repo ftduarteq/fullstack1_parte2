@@ -18,14 +18,19 @@ import org.springframework.http.HttpStatus;
 import com.perfulandia_sucursales.cl.perfulandia_sucursales.model.Sucursal;
 import com.perfulandia_sucursales.cl.perfulandia_sucursales.service.SucursalService;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+
 @RestController
 @RequestMapping("api/v1/sucursales")
+@Tag(name = "Sucursales", description = "Operaciones relacionadas con sucursales")
 public class SucursalController {
 
     @Autowired
     private SucursalService sucursalService;
 
     @GetMapping
+    @Operation(summary = "Listar todas las sucursales", description = "Obtiene una lista de todas las sucursales registradas")
     public ResponseEntity<List<Sucursal>> listar() {
         List<Sucursal> lista = sucursalService.findAll();
         if (lista.isEmpty()) {
@@ -35,6 +40,7 @@ public class SucursalController {
     }
 
     @GetMapping("{id}")
+    @Operation(summary = "Buscar sucursal por ID", description = "Busca una sucursal por su identificador")
     public ResponseEntity<Sucursal> buscar(@PathVariable Integer id) {
         try {
             return ResponseEntity.ok(sucursalService.findById(id));
@@ -44,6 +50,7 @@ public class SucursalController {
     }
 
     @PostMapping
+    @Operation(summary = "Guardar nueva sucursal", description = "Registra una nueva sucursal")
     public ResponseEntity<Sucursal> guardar(@RequestBody Sucursal sucursal) {
         try {
             Sucursal nuevaSucursal = sucursalService.save(sucursal);
@@ -54,6 +61,7 @@ public class SucursalController {
     }
 
     @PutMapping("{id}")
+    @Operation(summary = "Actualizar sucursal existente", description = "Actualiza una sucursal registrada")
     public ResponseEntity<Sucursal> actualizar(@PathVariable Integer id, @RequestBody Sucursal sucursal) {
         try {
             Sucursal sucursalExistente = sucursalService.findById(id);
@@ -71,6 +79,7 @@ public class SucursalController {
     }
 
     @DeleteMapping("{id}")
+    @Operation(summary = "Eliminar sucursal", description = "Elimina una sucursal por su identificador")
     public ResponseEntity<Void> eliminar(@PathVariable Integer id) {
         try {
             sucursalService.deleteById(id);

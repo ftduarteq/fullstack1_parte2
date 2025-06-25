@@ -17,14 +17,19 @@ import org.springframework.web.bind.annotation.RestController;
 import com.perfulandia_catalogo.cl.perfulandia_catalogo.model.Producto;
 import com.perfulandia_catalogo.cl.perfulandia_catalogo.service.ProductoService;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+
 @RestController
 @RequestMapping("api/v1/productos")
+@Tag(name = "Productos", description = "Operaciones relacionadas con los productos")
 public class ProductoController {
 
     @Autowired
     private ProductoService productoService;
 
     @GetMapping
+    @Operation(summary = "Listar todos los productos", description = "Obtiene una lista de todos los productos disponibles")
     public ResponseEntity<List<Producto>> listar() {
         List<Producto> listaProductos = productoService.findAll();
         if (listaProductos.isEmpty()) {
@@ -34,6 +39,7 @@ public class ProductoController {
     }
 
     @GetMapping("{id}")
+    @Operation(summary = "Buscar producto por ID", description = "Busca un producto por su identificador")
     public ResponseEntity<Producto> buscar(@PathVariable Integer id) {
         try {
             Producto producto = productoService.findById(id);
@@ -44,12 +50,14 @@ public class ProductoController {
     }
 
     @PostMapping
+    @Operation(summary = "Guardar nuevo producto", description = "Guarda un nuevo producto en el sistema")
     public ResponseEntity<Producto> guardar(@RequestBody Producto producto) {
         Producto nuevoProducto = productoService.save(producto);
         return ResponseEntity.status(HttpStatus.CREATED).body(nuevoProducto);
     }
 
     @PutMapping("{id}")
+    @Operation(summary = "Actualizar producto existente", description = "Actualiza un producto existente con nuevos datos")
     public ResponseEntity<Producto> actualizar(@PathVariable Integer id, @RequestBody Producto producto) {
         try {
             Producto productoExistente = productoService.findById(id);
@@ -70,6 +78,7 @@ public class ProductoController {
     }
 
     @DeleteMapping("{id}")
+    @Operation(summary = "Eliminar producto", description = "Elimina un producto del sistema por su identificador")
     public ResponseEntity<Void> eliminar(@PathVariable Integer id) {
         try {
             productoService.deleteById(id);

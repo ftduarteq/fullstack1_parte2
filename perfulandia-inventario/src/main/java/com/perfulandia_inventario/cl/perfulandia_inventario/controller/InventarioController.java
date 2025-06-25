@@ -17,14 +17,19 @@ import org.springframework.web.bind.annotation.RestController;
 import com.perfulandia_inventario.cl.perfulandia_inventario.model.Inventario;
 import com.perfulandia_inventario.cl.perfulandia_inventario.service.InventarioService;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+
 @RestController
 @RequestMapping("api/v1/inventario")
+@Tag(name = "Inventario", description = "Operaciones relacionadas con el inventario de productos")
 public class InventarioController {
 
     @Autowired
     private InventarioService inventarioService;
 
     @GetMapping
+    @Operation(summary = "Listar inventario completo", description = "Obtiene una lista de todos los registros de inventario")
     public ResponseEntity<List<Inventario>> listar() {
         List<Inventario> listaInventario = inventarioService.findAll();
         if (listaInventario.isEmpty()) {
@@ -34,6 +39,7 @@ public class InventarioController {
     }
 
     @GetMapping("{id}")
+    @Operation(summary = "Buscar inventario por ID", description = "Busca un registro de inventario según su identificador")
     public ResponseEntity<Inventario> buscar(@PathVariable Integer id) {
         try {
             Inventario inventario = inventarioService.findById(id);
@@ -44,6 +50,7 @@ public class InventarioController {
     }
 
     @PostMapping
+    @Operation(summary = "Guardar nuevo inventario", description = "Agrega un nuevo registro de inventario")
     public ResponseEntity<Inventario> guardar(@RequestBody Inventario inventario) {
         try {
             Inventario nuevoInventario = inventarioService.save(inventario);
@@ -54,6 +61,7 @@ public class InventarioController {
     }
 
     @PutMapping("{id}")
+    @Operation(summary = "Actualizar inventario existente", description = "Actualiza un registro de inventario existente")
     public ResponseEntity<Inventario> actualizar(@PathVariable Integer id, @RequestBody Inventario inventario) {
         try {
             Inventario inventarioExistente = inventarioService.findById(id);
@@ -72,6 +80,7 @@ public class InventarioController {
     }
 
     @DeleteMapping("{id}")
+    @Operation(summary = "Eliminar inventario", description = "Elimina un registro de inventario por su identificador")
     public ResponseEntity<Void> eliminar(@PathVariable Integer id) {
         try {
             inventarioService.deleteById(id);
