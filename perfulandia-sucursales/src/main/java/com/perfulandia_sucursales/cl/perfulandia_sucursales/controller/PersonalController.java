@@ -10,14 +10,19 @@ import org.springframework.web.bind.annotation.*;
 import com.perfulandia_sucursales.cl.perfulandia_sucursales.model.Personal;
 import com.perfulandia_sucursales.cl.perfulandia_sucursales.service.PersonalService;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+
 @RestController
 @RequestMapping("api/v1/personal")
+@Tag(name = "Personal", description = "Operaciones relacionadas con personal")
 public class PersonalController {
 
     @Autowired
     private PersonalService personalService;
 
     @GetMapping
+    @Operation(summary = "Listar todo el personal", description = "Obtiene una lista de todo el personal registrado")
     public ResponseEntity<List<Personal>> listar() {
         List<Personal> lista = personalService.findAll();
         if (lista.isEmpty()) {
@@ -27,6 +32,7 @@ public class PersonalController {
     }
 
     @GetMapping("{id}")
+    @Operation(summary = "Buscar personal por ID", description = "Busca un personal por su identificador")
     public ResponseEntity<Personal> buscar(@PathVariable Integer id) {
         try {
             Personal personal = personalService.findById(id);
@@ -37,6 +43,7 @@ public class PersonalController {
     }
 
     @PostMapping
+    @Operation(summary = "Guardar nuevo personal", description = "Registra un nuevo miembro del personal")
     public ResponseEntity<Personal> guardar(@RequestBody Personal personal) {
         try {
             Personal nuevoPersonal = personalService.save(personal);
@@ -47,6 +54,7 @@ public class PersonalController {
     }
 
     @PutMapping("{id}")
+    @Operation(summary = "Actualizar personal existente", description = "Actualiza un registro de personal")
     public ResponseEntity<Personal> actualizar(@PathVariable Integer id, @RequestBody Personal personal) {
         try {
             Personal personalExistente = personalService.findById(id);
@@ -63,6 +71,7 @@ public class PersonalController {
     }
 
     @DeleteMapping("{id}")
+    @Operation(summary = "Eliminar personal", description = "Elimina un miembro del personal por su identificador")
     public ResponseEntity<Void> eliminar(@PathVariable Integer id) {
         try {
             personalService.deleteById(id);

@@ -18,14 +18,18 @@ import org.springframework.http.HttpStatus;
 import com.perfulandia_sucursales.cl.perfulandia_sucursales.model.PoliticaSucursal;
 import com.perfulandia_sucursales.cl.perfulandia_sucursales.service.PoliticaSucursalService;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 @RestController
 @RequestMapping("api/v1/politicas-sucursal")
+@Tag(name = "Políticas de Sucursal", description = "Operaciones relacionadas con las políticas de sucursal")
 public class PoliticaSucursalController {
 
     @Autowired
     private PoliticaSucursalService politicaSucursalService;
 
     @GetMapping
+    @Operation(summary = "Listar políticas de sucursal", description = "Obtiene una lista de políticas de sucursal")
     public ResponseEntity<List<PoliticaSucursal>> listar() {
         List<PoliticaSucursal> lista = politicaSucursalService.findAll();
         if (lista.isEmpty()) {
@@ -35,6 +39,7 @@ public class PoliticaSucursalController {
     }
 
     @GetMapping("{id}")
+    @Operation(summary = "Buscar política por ID", description = "Busca una política de sucursal por su identificador")
     public ResponseEntity<PoliticaSucursal> buscar(@PathVariable Integer id) {
         try {
             return ResponseEntity.ok(politicaSucursalService.findById(id));
@@ -44,12 +49,14 @@ public class PoliticaSucursalController {
     }
 
     @PostMapping
+    @Operation(summary = "Guardar nueva política de sucursal", description = "Registra una nueva política de sucursal")
     public ResponseEntity<PoliticaSucursal> guardar(@RequestBody PoliticaSucursal politica) {
         PoliticaSucursal nuevaPolitica = politicaSucursalService.save(politica);
         return ResponseEntity.status(HttpStatus.CREATED).body(nuevaPolitica);
     }
 
     @PutMapping("{id}")
+    @Operation(summary = "Actualizar política de sucursal", description = "Actualiza una política de sucursal existente")
     public ResponseEntity<PoliticaSucursal> actualizar(@PathVariable Integer id, @RequestBody PoliticaSucursal politica) {
         try {
             PoliticaSucursal politicaExistente = politicaSucursalService.findById(id);
@@ -63,6 +70,7 @@ public class PoliticaSucursalController {
     }
 
     @DeleteMapping("{id}")
+    @Operation(summary = "Eliminar política de sucursal", description = "Elimina una política de sucursal por su identificador")
     public ResponseEntity<Void> eliminar(@PathVariable Integer id) {
         try {
             politicaSucursalService.deleteById(id);

@@ -17,14 +17,19 @@ import org.springframework.web.bind.annotation.RestController;
 import com.perfulandia_inventario.cl.perfulandia_inventario.model.Bodega;
 import com.perfulandia_inventario.cl.perfulandia_inventario.service.BodegaService;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+
 @RestController
 @RequestMapping("api/v1/bodegas")
+@Tag(name = "Bodegas", description = "Operaciones relacionadas con bodegas")
 public class BodegaController {
 
     @Autowired
     private BodegaService bodegaService;
 
     @GetMapping
+    @Operation(summary = "Listar todas las bodegas", description = "Obtiene una lista de todas las bodegas registradas")
     public ResponseEntity<List<Bodega>> listar() {
         List<Bodega> listaBodegas = bodegaService.findAll();
         if (listaBodegas.isEmpty()) {
@@ -34,6 +39,7 @@ public class BodegaController {
     }
 
     @GetMapping("{id}")
+    @Operation(summary = "Buscar bodega por ID", description = "Busca una bodega por su identificador")
     public ResponseEntity<Bodega> buscar(@PathVariable Integer id) {
         try {
             Bodega bodega = bodegaService.findById(id);
@@ -44,12 +50,14 @@ public class BodegaController {
     }
 
     @PostMapping
+    @Operation(summary = "Guardar nueva bodega", description = "Registra una nueva bodega en el sistema")
     public ResponseEntity<Bodega> guardar(@RequestBody Bodega bodega) {
         Bodega nuevaBodega = bodegaService.save(bodega);
         return ResponseEntity.status(HttpStatus.CREATED).body(nuevaBodega);
     }
 
     @PutMapping("{id}")
+    @Operation(summary = "Actualizar bodega existente", description = "Actualiza los datos de una bodega existente")
     public ResponseEntity<Bodega> actualizar(@PathVariable Integer id, @RequestBody Bodega bodega) {
         try {
             Bodega bodegaExistente = bodegaService.findById(id);
@@ -65,6 +73,7 @@ public class BodegaController {
     }
 
     @DeleteMapping("{id}")
+    @Operation(summary = "Eliminar bodega", description = "Elimina una bodega por su identificador")
     public ResponseEntity<Void> eliminar(@PathVariable Integer id) {
         try {
             bodegaService.deleteById(id);

@@ -17,14 +17,19 @@ import org.springframework.web.bind.annotation.RestController;
 import com.perfulandia_catalogo.cl.perfulandia_catalogo.model.MarcaProducto;
 import com.perfulandia_catalogo.cl.perfulandia_catalogo.service.MarcaProductoService;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+
 @RestController
 @RequestMapping("api/v1/marcas")
+@Tag(name = "Marca de Productos", description = "Operaciones relacionadas con marcas de productos")
 public class MarcaProductoController {
 
     @Autowired
     private MarcaProductoService marcaProductoService;
 
     @GetMapping
+    @Operation(summary = "Listar todas las marcas", description = "Obtiene una lista de todas las marcas de productos disponibles")
     public ResponseEntity<List<MarcaProducto>> listar() {
         List<MarcaProducto> marcas = marcaProductoService.findAll();
         if (marcas.isEmpty()) {
@@ -34,6 +39,7 @@ public class MarcaProductoController {
     }
 
     @GetMapping("{id}")
+    @Operation(summary = "Buscar marca por ID", description = "Obtiene una marca de producto según su identificador")
     public ResponseEntity<MarcaProducto> buscar(@PathVariable Integer id) {
         try {
             MarcaProducto marca = marcaProductoService.findById(id);
@@ -44,12 +50,14 @@ public class MarcaProductoController {
     }
 
     @PostMapping
+    @Operation(summary = "Guardar nueva marca", description = "Registra una nueva marca de producto")
     public ResponseEntity<MarcaProducto> guardar(@RequestBody MarcaProducto marca) {
         MarcaProducto marcaNueva = marcaProductoService.save(marca);
         return ResponseEntity.status(HttpStatus.CREATED).body(marcaNueva);
     }
 
     @PutMapping("{id}")
+    @Operation(summary = "Actualizar marca existente", description = "Actualiza los datos de una marca de producto existente")
     public ResponseEntity<MarcaProducto> actualizar(@PathVariable Integer id, @RequestBody MarcaProducto marca) {
         try {
             MarcaProducto marcaExistente = marcaProductoService.findById(id);
@@ -64,6 +72,7 @@ public class MarcaProductoController {
     }
 
     @DeleteMapping("{id}")
+    @Operation(summary = "Eliminar marca", description = "Elimina una marca de producto según su identificador")
     public ResponseEntity<Void> delete(@PathVariable Integer id) {
         try {
             marcaProductoService.deleteById(id);

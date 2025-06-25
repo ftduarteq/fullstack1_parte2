@@ -17,14 +17,18 @@ import org.springframework.web.bind.annotation.RestController;
 import com.perfulandia_usuarios.cl.perfulandia_usuarios.model.Usuario;
 import com.perfulandia_usuarios.cl.perfulandia_usuarios.service.UsuarioService;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+
 @RestController
 @RequestMapping("api/v1/usuarios")
-
+@Tag(name = "Usuarios", description = "Operaciones relacionadas con usuarios")
 public class UsuarioController {
     @Autowired
     private UsuarioService usuarioService;
 
     @GetMapping
+    @Operation(summary = "Listar usuarios", description = "Obtiene una lista de todos los usuarios registrados")
     public ResponseEntity<List<Usuario>> listar(){
         List<Usuario> usuarios = usuarioService.findAll();
         if(usuarios.isEmpty()){
@@ -34,12 +38,14 @@ public class UsuarioController {
     }
 
     @PostMapping
+    @Operation(summary = "Guardar nuevo usuario", description = "Registra un nuevo usuario")
     public ResponseEntity<Usuario> guardar(@RequestBody Usuario usuario){
         Usuario usuarioNuevo = usuarioService.save(usuario);
         return ResponseEntity.status(HttpStatus.CREATED).body(usuarioNuevo);
     }
     
     @GetMapping("{id}")
+    @Operation(summary = "Buscar usuario por ID", description = "Busca un usuario por su identificador")
     public ResponseEntity<Usuario> buscar(@PathVariable Integer id){
         try{
             Usuario usuario = usuarioService.findById(id);
@@ -51,6 +57,7 @@ public class UsuarioController {
     }
 
     @PutMapping("{id}")
+    @Operation(summary = "Actualizar usuario existente", description = "Actualiza un usuario registrado")
     public ResponseEntity<Usuario> actualizar(@PathVariable Integer id, @RequestBody Usuario usuario){
         try {
             Usuario u = usuarioService.findById(id);
@@ -71,6 +78,7 @@ public class UsuarioController {
     }
 
     @DeleteMapping("{id}")
+    @Operation(summary = "Eliminar usuario", description = "Elimina un usuario por su identificador")
     public ResponseEntity<Usuario> eliminar(@PathVariable Integer id){
         try {
             usuarioService.delete(id);
